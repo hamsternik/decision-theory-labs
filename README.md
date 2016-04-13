@@ -2,4 +2,5 @@
 
 ### University subject 
 
-Here I'll push and store all interesting labs about this topic. Now stored only one lab, but it's temporary :)
+List of course assignments:
+7. Dynamic Programming
