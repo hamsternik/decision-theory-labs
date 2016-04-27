@@ -59,6 +59,8 @@ In any programming language create a program which provides a general solution f
 
 and for every from valeus above calculated the probability *p* by formula #3.
 
+Assignment project: ([lab-8](lab-8))
+
 ## Copyright
 
 Copyright (c) 2016 Nikita Khomitsevich
