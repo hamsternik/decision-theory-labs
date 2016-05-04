@@ -10,7 +10,8 @@ shinyServer(function(input, output) {
 #         return(applicantHeightArr)
 #     })
     
-    calculateNumberOfWins <- reactive({
+    calculateNumberOfWins <- function() {
+    #calculateNumberOfWins <- reactive({
                 numberOfWins <- 0
                 for(i in 1:getExperimentSeriaNumber()) {
                     applicantHeightArr <- sample(seq(from=0, to=1, by=.01), size = getApplicantAmount(), replace = TRUE)
@@ -97,13 +98,16 @@ shinyServer(function(input, output) {
 #         print(numberOfWins)
 #         probability <- as.double(numberOfWins / getExperimentSeriaNumber())
 #         return(probability)
-})
+#})
+    }
     
-    calculateProbability <- reactive({
+    calculateProbability <- function() {
+    #calculateProbability <- reactive({
         numberOfWins <- calculateNumberOfWins()
         probability <- as.double(numberOfWins / getExperimentSeriaNumber())
         return(probability)
-    })
+    #})
+    }
     
     ### BLOCK - Getters
     
