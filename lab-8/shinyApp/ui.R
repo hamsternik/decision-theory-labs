@@ -11,9 +11,8 @@ shinyUI(fluidPage(
             numericInput("applicantAmount", label = "Количество претиндентов", value = 100, min = 1, max = 1000, step = 5)
         ),
         mainPanel(
-            plotOutput("plot1", click = "plot_click"),
+            plotOutput("applicants_plot", click = "plot_click"),
             verbatimTextOutput("probability_info")
-            #verbatimTextOutput("some_text")
         )
     )
 ))
