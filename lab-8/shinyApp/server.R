@@ -13,21 +13,18 @@ shinyServer(function(input, output) {
   ### ---------- Calculations
   
   # IMPLEMENTATION: Algo #1
-  calculateProbabailty <- reactive({
+  calculateProbabailtyByFirstAlgo <- reactive({
+    
+    ###
+    ptm <- proc.time()
+    ###
+    
     numberOfWins <- 0
     
     for(i in 1:input$experimentSerialNumber) {
-      people <- calculateApplicants()  
-      
-      output$applicants_plot <- renderPlot({
-        amountOfApplicants <- "Amount of applicants"
-        plot(people,
-             xlab = amountOfApplicants,
-             ylab = amountOfApplicants,
-             main = "Applicants general amount",
-             col = "black"
-        )
-      })
+      applicantHeightArr <-sample(seq(from = 0, to = 1, by = .01), size = input$applicantAmount, replace = TRUE)
+      applicantHeightArr <- applicantHeightArr * (input$maxHeight - input$minHeight) + input$minHeight
+      people <- applicantHeightArr
       
       globalMax <- max(people)
       selectedElement <- round(input$applicantAmount / exp(1)) + 1
@@ -44,12 +41,27 @@ shinyServer(function(input, output) {
         numberOfWins <- numberOfWins + 1
     }
     
+    output$applicants_plot <- renderPlot({
+      amountOfApplicants <- "Amount of applicants"
+      plot(people,
+           xlab = amountOfApplicants,
+           ylab = amountOfApplicants,
+           main = "Applicants general amount",
+           col = "black"
+      )
+    })
+    
+    ###
+    print(proc.time() - ptm)
+    ###
+    
     probability <- as.double(numberOfWins / input$experimentSerialNumber)
+    print(probability)
     return(probability)
   })
   
   # IMPLEMENTATION: Algo #2
-  calculteWinsAndProbability <- reactive({
+  calculteProbabilityBySecondAlgo <- reactive({
     numberOfWins <- 0
     pretendents <- calculateApplicants()
     
@@ -101,8 +113,8 @@ shinyServer(function(input, output) {
   ### ---------- UI Render
   
   output$probability_info <- renderText({
-    paste0("Probability of choosing applicant: ", calculateProbabailty())
-    #paste0("Probability of choosing applicant: ", calculteWinsAndProbability())
+    paste0("Probability of choosing applicant: ", calculateProbabailtyByFirstAlgo())
+    #paste0("Probability of choosing applicant: ", calculteProbabilityBySecondAlgo())
   })
   
 })
