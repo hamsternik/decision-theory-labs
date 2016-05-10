@@ -12,11 +12,10 @@ shinyServer(function(input, output) {
   
   ### ---------- Calculations
   
-  # IMPLEMENTATION: Algo #1
-  calculateProbabailtyByFirstAlgo <- reactive({
+  calculateProbabailty <- reactive({
     
-    ###
-    ptm <- proc.time()
+    ### DEBUG
+    # start_profiling()
     ###
     
     numberOfWins <- 0
@@ -51,70 +50,32 @@ shinyServer(function(input, output) {
       )
     })
     
-    ###
-    print(proc.time() - ptm)
+    ### DEBUG
+    # finish_proifiling()
     ###
     
     probability <- as.double(numberOfWins / input$experimentSerialNumber)
     print(probability)
-    return(probability)
-  })
-  
-  # IMPLEMENTATION: Algo #2
-  calculteProbabilityBySecondAlgo <- reactive({
-    numberOfWins <- 0
-    pretendents <- calculateApplicants()
     
-    output$applicants_plot <- renderPlot({
-      amountOfApplicants <- "Amount of applicants"
-      plot(pretendents,
-           xlab = amountOfApplicants,
-           ylab = amountOfApplicants,
-           main = "Applicants general amount",
-           col = "black"
-      )
-    })
-    
-    mmax <- max(pretendents);
-    bestIndex <- round(input$applicantAmount / exp(1)) + 1
-    tmpMax = pretendents[1]
-    for (i in 1:input$applicantAmount) {
-      if (i < bestIndex) {
-        if (pretendents[i] > tmpMax) {
-          print(pretendents[i])
-          print(tmpMax)
-          tmpMax <- pretendents[i];
-        }
-      }
-      if (i == bestIndex) {
-        if (pretendents[bestIndex] > tmpMax) {
-          tmpMax = pretendents[bestIndex];
-          if (mmax - tmpMax <= input$error) {
-            numberOfWins <- numberOfWins + 1
-          }
-          break;
-        }
-      }
-      if (i > bestIndex) {
-        if (pretendents[i] > tmpMax) {
-          tmpMax = pretendents[i];
-          if (mmax - tmpMax <= input$error) {
-            numberOfWins <- numberOfWins + 1
-          }
-          break;
-        }
-      }
-    }
-    
-    probability <- as.double(numberOfWins / input$experimentSerialNumber)
     return(probability)
   })
   
   ### ---------- UI Render
   
   output$probability_info <- renderText({
-    paste0("Probability of choosing applicant: ", calculateProbabailtyByFirstAlgo())
-    #paste0("Probability of choosing applicant: ", calculteProbabilityBySecondAlgo())
+    paste0("Probability of choosing applicant: ", calculateProbabailty())
   })
+  
+  ### ---------- DEBUG
+  
+  start_profiling <- function() {
+    ptm <<- proc.time()
+    print(ptm)
+  }
+  
+  finish_proifiling <- function() {
+    ptm <<- proc.time() - ptm
+    print(ptm)
+  }
   
 })
